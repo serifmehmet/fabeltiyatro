@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import logoImage from '~/assets/images/fabellogosiyah.jpg'
 
 type SubmitState = 'idle' | 'success' | 'error'
 
@@ -43,7 +44,7 @@ const errorMessage = computed(() => {
   if (!email.value) {
     return 'Lütfen e-posta adresinizi girin.'
   }
-  const pattern = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/u
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u
   if (!pattern.test(email.value)) {
     return 'Geçerli bir e-posta adresi girin.'
   }
@@ -71,7 +72,7 @@ const handleSubmit = () => {
       <div class="flex-1 space-y-8">
         <div class="flex items-center gap-4">
           <img
-            src="/fabellogosiyah.jpg"
+            :src="logoImage"
             alt="Fabel Tiyatro logosu"
             class="h-24 w-24 rounded-full border border-white/10 object-cover"
           />
