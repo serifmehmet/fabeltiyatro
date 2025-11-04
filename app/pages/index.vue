@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import logoImage from '~/assets/images/fabellogosiyah.jpg'
+import logoImage from '~/assets/images/fabel_tiyatro_logo.png'
 
 type SubmitState = 'idle' | 'success' | 'error'
 
@@ -19,23 +19,20 @@ const socialLinks = [
   },
   {
     name: 'WhatsApp',
-    href: 'https://chat.whatsapp.com/',
+    href: 'https://chat.whatsapp.com/D6bhDXuecjE8b94yGHBmfp?mode=wwt',
     description: 'WhatsApp topluluğumuza katılın'
   }
 ]
 
-const rehearsalFocus = [
+const newsletterHighlights = [
   {
-    title: 'Yeni oyun geliştirme',
-    detail: 'Metin atölyeleri ile hikayemizi birlikte kuruyoruz.'
+    title: 'Prova notları ve sahne planları',
+    detail: 'Her ay provalardan kısa notları ve sıradaki çalışma hedeflerimizi paylaşıyoruz.'
   },
+  
   {
-    title: 'Beden ve ses çalışmaları',
-    detail: 'Boş sahneye ihtiyaç duymadan oyuncuların potansiyelini artırıyoruz.'
-  },
-  {
-    title: 'Şehir içi pop-up gösterimler',
-    detail: 'Mekân sponsorlukları ve misafirliklerle seyirciyle buluşmayı planlıyoruz.'
+    title: 'Seyirciye özel davetler',
+    detail: 'Kapalı devre gösterimlere, okumalarımıza ve çevrim içi söyleşilere ilk siz davet alırsınız.'
   }
 ]
 
@@ -62,33 +59,49 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <main class="relative overflow-hidden">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(241,196,15,0.18),_rgba(7,7,7,0.9))]"
-    />
-
-    <section class="relative z-10 mx-auto flex min-h-[75vh] max-w-6xl flex-col gap-12 px-6 pb-16 pt-24 md:flex-row md:items-center">
-      <div class="flex-1 space-y-8">
-        <div class="flex items-center gap-4">
+  <main class="page-main">
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-header">
           <img
             :src="logoImage"
             alt="Fabel Tiyatro logosu"
-            class="h-24 w-24 rounded-full border border-white/10 object-cover"
+            class="hero-logo"
           />
-          <div>
-            <p class="uppercase tracking-[0.35em] text-white/60">Fabel Tiyatro</p>
-            <h1 class="text-4xl font-semibold leading-tight sm:text-5xl">Sahnesiz tiyatro, hikayesi bol topluluk.</h1>
-          </div>
+          <!-- <div>
+            <p class="hero-subtitle">Fabel Tiyatro</p>
+            <h1 class="hero-title">Sahnesiz tiyatro, hikayesi bol topluluk.</h1>
+          </div> -->
         </div>
-        <p class="max-w-xl text-lg text-white/80">
-          Şu an yoğun bir prova dönemindeyiz. Hikayemizi güçlendiriyor, yeni mekânlar arıyor ve seyircimizle buluşmak için
+        <p class="hero-description">
+          Şu an yoğun bir prova dönemindeyiz. Sizinle buluşmak için
           sabırsızlanıyoruz. Bültenimize katılın; ilk sahneye çıktığımızda haberdar olun.
         </p>
 
-        <form @submit.prevent="handleSubmit" class="space-y-3">
-          <label class="block text-sm font-medium text-white/70" for="email">E-bültenimize katılın</label>
-          <div class="flex flex-col gap-3 sm:flex-row">
+        <div class="status-info">
+          <div class="status-pill">
+            <span class="status-dot" />
+            Prova dönemi sürüyor
+          </div>
+          <p class="status-timeline">
+            İlk gösterim hedefi: <span class="status-highlight">2025 sonbahar</span>
+          </p>
+        </div>
+      </div>
+
+      <section class="newsletter-aside">
+        <h2 class="newsletter-aside-heading">Bültenimizde neler var?</h2>
+        <ul class="newsletter-aside-list">
+          <li v-for="item in newsletterHighlights" :key="item.title" class="newsletter-aside-item">
+            <h3 class="newsletter-aside-item-title">{{ item.title }}</h3>
+            <p class="newsletter-aside-item-text">
+              {{ item.detail }}
+            </p>
+          </li>
+        </ul>
+        <form @submit.prevent="handleSubmit" class="newsletter-form">
+          <label class="newsletter-label" for="email">E-bültenimize katılın</label>
+          <div class="newsletter-fields">
             <input
               id="email"
               v-model="email"
@@ -96,82 +109,221 @@ const handleSubmit = () => {
               name="email"
               required
               placeholder="ornek@eposta.com"
-              class="w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/60"
+              class="newsletter-input"
             />
             <button
               type="submit"
-              class="rounded-md bg-accent px-5 py-3 text-base font-semibold text-night transition hover:bg-yellow-400 hover:shadow-[0_12px_24px_rgba(241,196,15,0.25)] focus:outline-none focus:ring-2 focus:ring-accent/60 focus:ring-offset-2 focus:ring-offset-night"
+              class="newsletter-button"
             >
               Beni haberdar et
             </button>
           </div>
-          <p v-if="submitState === 'success'" class="text-sm text-accent/90">
+          <p v-if="submitState === 'success'" class="newsletter-success">
             {{ successMessage }}
           </p>
-          <p v-else-if="submitState === 'error'" class="text-sm text-red-400">
+          <p v-else-if="submitState === 'error'" class="newsletter-error">
             {{ errorMessage }}
           </p>
-          <p v-else class="text-xs text-white/50">
+          <p v-else class="newsletter-note">
             E-postanızı yalnızca prova ve gösteri haberleri için kullanacağız.
           </p>
         </form>
-
-        <div class="flex flex-wrap items-center gap-5 text-sm text-white/70">
-          <div class="flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-white/60">
-            <span class="inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            Prova dönemi sürüyor
-          </div>
-          <p class="text-white/60">
-            İlk gösterim hedefi: <span class="font-medium text-white">2025 sonbahar</span>
-          </p>
-        </div>
-      </div>
-
-      <aside class="flex-1 space-y-8 rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur">
-        <h2 class="text-2xl font-semibold">Repertuvarımızı nasıl kuruyoruz?</h2>
-        <ul class="space-y-6">
-          <li v-for="item in rehearsalFocus" :key="item.title" class="rounded-lg border border-white/5 bg-white/[0.02] p-4">
-            <h3 class="text-lg font-medium text-accent">{{ item.title }}</h3>
-            <p class="mt-1 text-sm text-white/70">
-              {{ item.detail }}
-            </p>
-          </li>
-        </ul>
-        <p class="text-sm text-white/60">
-          Mevcut mekânsızlığımız yaratıcılığımızı tetikliyor. Pop-up sahneler, başka topluluklarla ortak projeler ve
-          kentin beklenmedik köşelerinde performanslar için planlarımız var.
+        <p class="newsletter-aside-note">
+          Yazdığımız her e-posta tiyatro üretimimizin perde arkasına açılan küçük bir pencere. Topluluğumuza katıldığınızda bu
+          süreçleri birlikte şekillendiriyoruz.
         </p>
-      </aside>
+      </section>
     </section>
 
-    <section class="relative z-10 border-t border-white/5 bg-white/[0.02] py-16">
-      <div class="mx-auto flex max-w-5xl flex-col gap-8 px-6 md:flex-row md:items-center md:justify-between">
-        <div class="max-w-xl space-y-3">
-          <h2 class="text-2xl font-semibold">Topluluğa katılın</h2>
-          <p class="text-sm text-white/70">
+    <section class="cta-section">
+      <div class="cta-container">
+        <div class="cta-text">
+          <h2 class="cta-heading">Topluluğa katılın</h2>
+          <p class="cta-description">
             Provalardan haber, gönüllü çağrıları ve beklediğiniz gösteri duyuruları sosyal kanallarımızda.
           </p>
         </div>
-        <div class="flex flex-wrap gap-4">
+        <div class="cta-links">
           <a
             v-for="link in socialLinks"
             :key="link.name"
             :href="link.href"
             target="_blank"
             rel="noopener"
-            class="group flex min-w-[180px] flex-col gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left transition hover:border-accent/80 hover:bg-accent/10"
+            class="cta-link"
           >
-            <span class="text-sm font-semibold text-white">{{ link.name }}</span>
-            <span class="text-xs text-white/60">{{ link.description }}</span>
+            <span class="cta-link-name">{{ link.name }}</span>
+            <span class="cta-link-description">{{ link.description }}</span>
           </a>
         </div>
       </div>
     </section>
 
-    <footer class="relative z-10 border-t border-white/5 py-10 text-center text-xs text-white/50">
+    <footer class="site-footer">
       <p>
         © {{ new Date().getFullYear() }} Fabel Tiyatro. Mekân olmadan da üretilebileceğine inanıyoruz.
       </p>
     </footer>
   </main>
 </template>
+
+<style scoped lang="postcss">
+.page-main {
+  @apply relative overflow-hidden bg-black;
+}
+
+.hero-section {
+  @apply relative z-10 mx-auto flex min-h-[75vh] max-w-6xl flex-col gap-12 px-6 pb-16 pt-24 md:flex-row md:items-start;
+}
+
+.hero-content {
+  @apply flex-1 space-y-8;
+}
+
+.hero-header {
+  @apply flex items-center gap-4;
+}
+
+
+.hero-subtitle {
+  @apply uppercase text-white/60;
+  letter-spacing: 0.35em;
+}
+
+.hero-title {
+  @apply text-4xl font-semibold leading-tight sm:text-5xl;
+}
+
+.hero-description {
+  @apply max-w-xl text-lg text-white/80;
+}
+
+.newsletter-form {
+  @apply space-y-3;
+}
+
+.newsletter-label {
+  @apply block text-sm font-medium text-white/70;
+}
+
+.newsletter-fields {
+  @apply flex flex-col gap-3 sm:flex-row;
+}
+
+.newsletter-input {
+  @apply w-full rounded-md border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/40 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/60;
+}
+
+.newsletter-button {
+  @apply rounded-md bg-accent px-5 py-3 text-base font-semibold text-night transition focus:outline-none focus:ring-2 focus:ring-accent/60 focus:ring-offset-2 focus:ring-offset-black hover:bg-yellow-400;
+}
+
+.newsletter-button:hover {
+  box-shadow: 0 12px 24px rgba(241, 196, 15, 0.25);
+}
+
+.newsletter-success {
+  @apply text-sm text-accent/90;
+}
+
+.newsletter-error {
+  @apply text-sm text-red-400;
+}
+
+.newsletter-note {
+  @apply text-xs text-white/50;
+}
+
+.status-info {
+  @apply flex flex-wrap items-center gap-5 text-sm text-white/70;
+}
+
+.status-pill {
+  @apply flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-white/60;
+}
+
+.status-dot {
+  @apply inline-flex h-2 w-2 rounded-full bg-emerald-400;
+}
+
+.status-timeline {
+  @apply text-white/60;
+}
+
+.status-highlight {
+  @apply font-medium text-white;
+}
+
+.newsletter-aside {
+  @apply flex-1 space-y-8 rounded-3xl border border-white/10 p-8 backdrop-blur;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.newsletter-aside-heading {
+  @apply text-2xl font-semibold;
+}
+
+.newsletter-aside-list {
+  @apply space-y-6;
+}
+
+.newsletter-aside-item {
+  @apply rounded-lg border border-white/5 p-4;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.newsletter-aside-item-title {
+  @apply text-lg font-medium text-accent;
+}
+
+.newsletter-aside-item-text {
+  @apply mt-1 text-sm text-white/70;
+}
+
+.newsletter-aside-note {
+  @apply text-sm text-white/60;
+}
+
+.cta-section {
+  @apply relative z-10 border-t border-white/5 py-16;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.cta-container {
+  @apply mx-auto flex max-w-5xl flex-col gap-8 px-6 md:flex-row md:items-center md:justify-between;
+}
+
+.cta-text {
+  @apply max-w-xl space-y-3;
+}
+
+.cta-heading {
+  @apply text-2xl font-semibold;
+}
+
+.cta-description {
+  @apply text-sm text-white/70;
+}
+
+.cta-links {
+  @apply flex flex-wrap gap-4;
+}
+
+.cta-link {
+  @apply flex flex-col gap-1 rounded-xl border border-white/10 px-4 py-3 text-left transition hover:border-accent/80 hover:bg-accent/10;
+  background-color: rgba(255, 255, 255, 0.04);
+  min-width: 180px;
+}
+
+.cta-link-name {
+  @apply text-sm font-semibold text-white;
+}
+
+.cta-link-description {
+  @apply text-xs text-white/60;
+}
+
+.site-footer {
+  @apply relative z-10 border-t border-white/5 py-10 text-center text-xs text-white/50;
+}
+</style>

@@ -1,6 +1,12 @@
 <template>
-  <div class="min-h-screen bg-night text-white font-sans antialiased">
+  <div class="app-root">
     <NuxtRouteAnnouncer />
     <NuxtPage />
   </div>
 </template>
+
+<style scoped lang="postcss">
+.app-root {
+  @apply min-h-screen bg-black text-white font-sans antialiased;
+}
+</style>
