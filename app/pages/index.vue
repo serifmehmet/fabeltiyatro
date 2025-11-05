@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import logoImage from '~/assets/images/fabel_tiyatro_logo.png'
+import instaIcon from '~/assets/images/insta_icon.png'
+import facebookIcon from '~/assets/images/fb_icon.png'
+import youtubeIcon from '~/assets/images/yt_icon.png'
+import wpIcon from '~/assets/images/wp_icon.png'
 
 type SubmitState = 'idle' | 'success' | 'error'
 
@@ -10,29 +14,38 @@ const socialLinks = [
   {
     name: 'Instagram',
     href: 'https://www.instagram.com/fabeltiyatro',
-    description: 'Provalardan kareler ve duyurular'
+    description: 'Provalardan kareler ve duyurular',
+    icon: instaIcon
   },
   {
     name: 'Facebook',
     href: 'https://www.facebook.com/fabeltiyatro',
-    description: 'Topluluğumuzdan uzun hikayeler'
+    description: 'Topluluğumuzdan uzun hikayeler',
+    icon: facebookIcon
   },
   {
     name: 'WhatsApp',
     href: 'https://chat.whatsapp.com/D6bhDXuecjE8b94yGHBmfp?mode=wwt',
-    description: 'WhatsApp topluluğumuza katılın'
+    description: 'WhatsApp topluluğumuza katılın',
+    icon: wpIcon
+  },
+  {
+    name: 'Youtube',
+    href: 'https://www.youtube.com/@FabelTiyatro',
+    description: 'Youtube kanalımıza abone olun',
+    icon: youtubeIcon
   }
 ]
 
 const newsletterHighlights = [
   {
-    title: 'Prova notları ve sahne planları',
-    detail: 'Her ay provalardan kısa notları ve sıradaki çalışma hedeflerimizi paylaşıyoruz.'
+    title: 'Aylık oyun ve turne takvimi',
+    detail: 'Aylık oyun ve turne takvimimizi, oyunlarımızdan notlarımızı paylaşıyoruz.'
   },
   
   {
-    title: 'Seyirciye özel davetler',
-    detail: 'Kapalı devre gösterimlere, okumalarımıza ve çevrim içi söyleşilere ilk siz davet alırsınız.'
+    title: 'Özel davetler',
+    detail: 'Seyircili prova tarihlerimizi, provalarımızdan notlarımızı ve daha birçok özel içeriğimizi paylaşıyoruz.'
   }
 ]
 
@@ -78,15 +91,38 @@ const handleSubmit = () => {
           sabırsızlanıyoruz. Bültenimize katılın; ilk sahneye çıktığımızda haberdar olun.
         </p>
 
-        <div class="status-info">
-          <div class="status-pill">
-            <span class="status-dot" />
-            Prova dönemi sürüyor
-          </div>
-          <p class="status-timeline">
-            İlk gösterim hedefi: <span class="status-highlight">2025 sonbahar</span>
+        <section class="cta-section">
+      <div class="cta-container">
+        <div class="cta-text">
+          <h2 class="cta-heading">Topluluğa katılın</h2>
+          <p class="cta-description">
+            Oyunlardan ve provalardan haberler, seyirci çağrıları ve daha bir çok içerik sosyal medya kanallarımızda.
           </p>
         </div>
+        <div class="cta-links">
+          <a
+            v-for="link in socialLinks"
+            :key="link.name"
+            :href="link.href"
+            target="_blank"
+            rel="noopener"
+            class="cta-link"
+          >
+            <div class="cta-link-icon-wrapper">
+              <img
+                :src="link.icon"
+                alt="Fabel Tiyatro logosu"
+                class="hero-logo"
+              />
+            </div>
+            <span class="cta-link-text">
+              <span class="cta-link-name">{{ link.name }}</span>
+              <span class="cta-link-description">{{ link.description }}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
       </div>
 
       <section class="newsletter-aside">
@@ -99,69 +135,20 @@ const handleSubmit = () => {
             </p>
           </li>
         </ul>
-        <form @submit.prevent="handleSubmit" class="newsletter-form">
-          <label class="newsletter-label" for="email">E-bültenimize katılın</label>
-          <div class="newsletter-fields">
-            <input
-              id="email"
-              v-model="email"
-              type="email"
-              name="email"
-              required
-              placeholder="ornek@eposta.com"
-              class="newsletter-input"
-            />
-            <button
-              type="submit"
-              class="newsletter-button"
-            >
-              Beni haberdar et
-            </button>
-          </div>
-          <p v-if="submitState === 'success'" class="newsletter-success">
-            {{ successMessage }}
-          </p>
-          <p v-else-if="submitState === 'error'" class="newsletter-error">
-            {{ errorMessage }}
-          </p>
-          <p v-else class="newsletter-note">
-            E-postanızı yalnızca prova ve gösteri haberleri için kullanacağız.
-          </p>
-        </form>
+        
+        <div class="ml-embedded" data-form="pOMSZL"></div>
+
         <p class="newsletter-aside-note">
-          Yazdığımız her e-posta tiyatro üretimimizin perde arkasına açılan küçük bir pencere. Topluluğumuza katıldığınızda bu
-          süreçleri birlikte şekillendiriyoruz.
+          Topluluğumuza katılın ve en son haberleri, indirimleri ve oyunlarımıza özel teklifleri e-posta kutunuza gönderelim.
         </p>
       </section>
     </section>
 
-    <section class="cta-section">
-      <div class="cta-container">
-        <div class="cta-text">
-          <h2 class="cta-heading">Topluluğa katılın</h2>
-          <p class="cta-description">
-            Provalardan haber, gönüllü çağrıları ve beklediğiniz gösteri duyuruları sosyal kanallarımızda.
-          </p>
-        </div>
-        <div class="cta-links">
-          <a
-            v-for="link in socialLinks"
-            :key="link.name"
-            :href="link.href"
-            target="_blank"
-            rel="noopener"
-            class="cta-link"
-          >
-            <span class="cta-link-name">{{ link.name }}</span>
-            <span class="cta-link-description">{{ link.description }}</span>
-          </a>
-        </div>
-      </div>
-    </section>
+    
 
     <footer class="site-footer">
       <p>
-        © {{ new Date().getFullYear() }} Fabel Tiyatro. Mekân olmadan da üretilebileceğine inanıyoruz.
+        © 2025 - Fabel Tiyatro.
       </p>
     </footer>
   </main>
@@ -177,7 +164,7 @@ const handleSubmit = () => {
 }
 
 .hero-content {
-  @apply flex-1 space-y-8;
+  @apply flex-1 space-y-3;
 }
 
 .hero-header {
@@ -234,28 +221,10 @@ const handleSubmit = () => {
   @apply text-xs text-white/50;
 }
 
-.status-info {
-  @apply flex flex-wrap items-center gap-5 text-sm text-white/70;
-}
 
-.status-pill {
-  @apply flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-white/60;
-}
-
-.status-dot {
-  @apply inline-flex h-2 w-2 rounded-full bg-emerald-400;
-}
-
-.status-timeline {
-  @apply text-white/60;
-}
-
-.status-highlight {
-  @apply font-medium text-white;
-}
 
 .newsletter-aside {
-  @apply flex-1 space-y-8 rounded-3xl border border-white/10 p-8 backdrop-blur;
+  @apply flex-1 space-y-5 rounded-3xl border border-white/10 p-8 backdrop-blur;
   background-color: rgba(255, 255, 255, 0.03);
 }
 
@@ -285,16 +254,16 @@ const handleSubmit = () => {
 }
 
 .cta-section {
-  @apply relative z-10 border-t border-white/5 py-16;
-  background-color: rgba(255, 255, 255, 0.02);
+  @apply relative z-10 border-t border-white/5 pt-5;
+  
 }
 
 .cta-container {
-  @apply mx-auto flex max-w-5xl flex-col gap-8 px-6 md:flex-row md:items-center md:justify-between;
+  @apply mx-auto max-w-5xl  ;
 }
 
 .cta-text {
-  @apply max-w-xl space-y-3;
+  @apply max-w-xl space-y-3 mb-8;
 }
 
 .cta-heading {
@@ -306,13 +275,24 @@ const handleSubmit = () => {
 }
 
 .cta-links {
-  @apply flex flex-wrap gap-4;
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
 }
 
 .cta-link {
-  @apply flex flex-col gap-1 rounded-xl border border-white/10 px-4 py-3 text-left transition hover:border-accent/80 hover:bg-accent/10;
+  @apply flex w-full items-center gap-3 rounded-xl border border-white/10 px-4 py-3 text-left transition hover:border-accent/80 hover:bg-accent/10;
   background-color: rgba(255, 255, 255, 0.04);
-  min-width: 180px;
+}
+
+.cta-link-icon-wrapper {
+  @apply flex h-12 w-12 items-center justify-center  text-white;
+}
+
+.cta-link-icon {
+  @apply h-6 w-6 fill-current;
+}
+
+.cta-link-text {
+  @apply flex flex-col gap-1;
 }
 
 .cta-link-name {
@@ -325,5 +305,14 @@ const handleSubmit = () => {
 
 .site-footer {
   @apply relative z-10 border-t border-white/5 py-10 text-center text-xs text-white/50;
+}
+
+.ml-form-align-center {
+  text-align: none;
+}
+
+.ml-form-embedContainer .ml-form-embedWrapper.embedForm {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 </style>
