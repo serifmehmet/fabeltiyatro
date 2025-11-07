@@ -22,6 +22,11 @@ export default defineNuxtConfig({
         {
           id: 'meta-pixel-init',
           innerHTML: "!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','3396480127188201');fbq('track','PageView');"
+        },
+        {
+          id: 'carbon-badge',
+          src: 'https://unpkg.com/website-carbon-badges@1.1.3/b.min.js',
+          defer: true
         }
       ],
       noscript: [

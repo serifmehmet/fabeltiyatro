@@ -150,6 +150,7 @@ const handleSubmit = () => {
       <p>
         © 2025 - Fabel Tiyatro.
       </p>
+      <div id="wcb" class="carbonbadge wcb-d"></div>
     </footer>
   </main>
 </template>
