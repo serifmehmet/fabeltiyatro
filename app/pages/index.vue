@@ -5,6 +5,7 @@ import instaIcon from '~/assets/images/insta_icon.png'
 import facebookIcon from '~/assets/images/fb_icon.png'
 import youtubeIcon from '~/assets/images/yt_icon.png'
 import wpIcon from '~/assets/images/wp_icon.png'
+import CarbonBadge from "vue-carbonbadge"
 
 type SubmitState = 'idle' | 'success' | 'error'
 
@@ -150,7 +151,9 @@ const handleSubmit = () => {
       <p>
         © 2025 - Fabel Tiyatro.
       </p>
-      <div id="wcb" class="carbonbadge wcb-d"></div>
+      <ClientOnly>
+    <CarbonBadge/>
+  </ClientOnly>
     </footer>
   </main>
 </template>
