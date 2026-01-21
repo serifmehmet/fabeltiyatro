@@ -1,39 +1,38 @@
 <script setup lang="ts">
-
-import { usePlayTabs, type TabId } from '~/composables/usePlayTabs'
+import { usePlayTabs, type TabId } from "~/composables/usePlayTabs";
 interface Props {
-  title: string
-  subTitle?: string
-  image?: any
-  premiereDate?: string
-  playDuration?: string
-  ticketLink?: string
+  title: string;
+  subTitle?: string;
+  image?: any;
+  premiereDate?: string;
+  playDuration?: string;
+  ticketLink?: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 const formatDate = (dateString: string | undefined) => {
-  if (!dateString) return null
-  const date = new Date(dateString)
-  return date.toLocaleDateString('tr-TR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-}
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  return date.toLocaleDateString("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
 
-const { setActiveTab } = usePlayTabs()
+const { setActiveTab } = usePlayTabs();
 
 const handleTicketClick = () => {
-  setActiveTab('content-events')
+  setActiveTab("content-events");
   // Wait for next tick to ensure DOM is updated after tab change
   nextTick(() => {
-    const element = document.getElementById('content-events')
+    const element = document.getElementById("content-events");
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  })
-}
+  });
+};
 </script>
 
 <template>
@@ -69,111 +68,6 @@ const handleTicketClick = () => {
       </div>
     </header>
   </div>
-
 </template>
 
-<style scoped lang="postcss">
-.play-hero {
-  @apply grid items-center pb-[clamp(2.375rem, 2.21vw+1.537rem, 3.125rem)] pt-[clamp(2.375rem, 2.21vw+1.537rem, 3.125rem)];
-  background-color: var(--bg-content);
-  grid-template-columns: [full-start] minmax(1.5rem, 1fr) [break-start] repeat(12, [col] minmax(0, 4.9166666667rem)) [break-end] minmax(1.5rem, 1fr) [full-end];
-  column-gap: 1.5rem;
-  grid-auto-flow: dense;
-}
-
-/* Hero Media - Image Side */
-.hero-media {
-  @apply relative w-full overflow-hidden bg-black col-start-7 col-span-7;
-
-  grid-row: 1;
-  min-height: 400px;
-}
-
-.hero-image {
-  @apply h-full w-full object-cover;
-}
-
-.hero-image-placeholder {
-  @apply flex h-full w-full items-center justify-center bg-white/5;
-}
-
-.placeholder-text {
-  @apply text-2xl font-bold main-text-color;
-}
-
-/* Hero Wrapper - Text Side */
-.hero-wrapper {
-  @apply flex flex-col justify-between col-start-2 col-span-4;
-
-  grid-row: 1;
-}
-
-/* Hero Text */
-.hero-text {
-  @apply mb-8;
-}
-
-.hero-title {
-  @apply text-4xl font-bold leading-tight main-text-color md:text-5xl lg:text-6xl;
-}
-
-.hero-pre-title {
-  @apply mb-2 block text-base font-normal main-text-color md:text-lg;
-}
-
-/* Hero Meta & Actions */
-.hero-meta {
-  @apply flex flex-col gap-6 md:flex-row md:items-end md:justify-between;
-}
-
-.hero-datetime {
-  @apply flex flex-wrap items-center gap-2 main-text-color;
-}
-
-.datetime-text {
-  @apply text-sm md:text-base main-text-color;
-}
-
-.duration-text {
-  @apply text-sm main-text-color md:text-base;
-}
-
-/* Hero Actions */
-.hero-actions {
-  @apply flex items-center;
-}
-
-.hero-cta {
-  @apply inline-flex items-center gap-3 rounded-md bg-accent px-0 py-3 text-sm font-bold tracking-wider main-text-color transition hover:bg-accent/90 md:px-4 md:py-4;
-  letter-spacing: 0.1em;
-}
-
-.cta-text {
-  @apply inline-block;
-}
-
-.cta-icon {
-  @apply inline-flex h-4 w-4 items-center justify-center md:h-5 md:w-5;
-}
-
-.cta-icon svg {
-  @apply h-full w-full;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  .play-hero {
-    @apply grid-cols-1;
-  }
-
-  .hero-media {
-    @apply order-1;
-    grid-column: full-start / full-end;
-  }
-
-  .hero-wrapper {
-    @apply order-2;
-    grid-column: break-start / break-end;
-  }
-}
-</style>
+<style scoped></style>

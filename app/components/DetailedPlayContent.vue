@@ -1,37 +1,33 @@
 <script setup lang="ts">
-import type { PortableTextBlock } from '@portabletext/types'
-import { usePlayTabs } from '~/composables/usePlayTabs'
+import type { PortableTextBlock } from "@portabletext/types";
+import { usePlayTabs } from "~/composables/usePlayTabs";
 
 interface Props {
-  playDescription?: PortableTextBlock[]
+  playDescription?: PortableTextBlock[];
   casts?: Array<{
-
-    fullName: string
-    actorImage?: any
-
-  }>
+    fullName: string;
+    actorImage?: any;
+  }>;
   backstage?: Array<{
-    order: number
+    order: number;
     member: {
-      fullName: string
-      image?: any
-    }
-    roles: string[]
-  }>
+      fullName: string;
+      image?: any;
+    };
+    roles: string[];
+  }>;
   events?: Array<{
-    _id: string
-    date?: string
-    place?: string
-    ticketLink?: string
-  }>
-  gallery?: any[]
-  title?: string
+    _id: string;
+    date?: string;
+    place?: string;
+    ticketLink?: string;
+  }>;
+  gallery?: any[];
+  title?: string;
 }
 
-
-
-const props = defineProps<Props>()
-const { isActive } = usePlayTabs()
+const props = defineProps<Props>();
+const { isActive } = usePlayTabs();
 </script>
 
 <template>
@@ -53,7 +49,6 @@ const { isActive } = usePlayTabs()
     <!-- Cast & Crew Tab -->
     <section class="o-grid o-tab" id="content-the-company" aria-labelledby="tab-the-company" role="tabpanel"
       :hidden="!isActive('content-the-company')">
-
       <div class="o-block o-grid__item o-block--row-1">
         <h3 class="o-block__heading">Ekİp ve Oyuncular</h3>
         <CastList v-if="casts && casts.length > 0" :casts="casts" />
@@ -62,7 +57,6 @@ const { isActive } = usePlayTabs()
         </div>
       </div>
       <div class="o-block o-grid__item o-block--row-2">
-
         <BackstageList v-if="backstage && backstage.length > 0" :backstage="backstage" />
         <div v-else class="empty-state">
           <p>Ekip bilgisi henüz eklenmemiş.</p>
@@ -73,8 +67,6 @@ const { isActive } = usePlayTabs()
     <!-- Events Schedule Tab -->
     <section class="o-grid o-tab" id="content-events" aria-labelledby="tab-the-events" role="tabpanel"
       :hidden="!isActive('content-events')">
-
-
       <div class="o-grid__item o-block">
         <h2 class="o-block__heading">OYUN TARİHLERİ</h2>
         <EventsSchedule v-if="events && events.length > 0" :events="events" />
@@ -87,7 +79,6 @@ const { isActive } = usePlayTabs()
     <!-- Gallery Tab -->
     <section class="o-grid o-tab" id="content-gallery" aria-labelledby="tab-the-gallery" role="tabpanel"
       :hidden="!isActive('content-gallery')">
-
       <div class="o-grid__item o-block">
         <h2 class="o-block__heading">Galerİ</h2>
         <PlayGallery v-if="gallery && gallery.length > 0" :gallery="gallery" :title="title" />
@@ -110,15 +101,7 @@ const { isActive } = usePlayTabs()
   </div>
 </template>
 
-<style scoped lang="postcss">
-.empty-state {
-  @apply py-12 text-center;
-}
-
-.empty-state p {
-  @apply text-lg main-text-color opacity-60;
-}
-
+<style scoped>
 .o-tab[hidden] {
   display: none;
 }
