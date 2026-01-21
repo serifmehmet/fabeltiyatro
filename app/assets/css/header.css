@@ -1,102 +1,102 @@
 .c-site-header {
-    --nav-list-direction: row;
-    --nav-link-display: flex;
-    width: 100%;
-    -webkit-overflow-scrolling: touch;
-    color: var(--text-color-light);
-    position: relative;
-    z-index: 3;
-    font-size: var(--text-size-heading-3)
+  --nav-list-direction: row;
+  --nav-link-display: flex;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  color: var(--text-color-light);
+  position: relative;
+  z-index: 3;
+  font-size: var(--text-size-heading-3);
 }
 
 .c-site-header__logo {
-    grid-area: logo
+  grid-area: logo;
 }
 
 .c-site-header__nav--primary {
-    grid-area: nav--primary
+  grid-area: nav--primary;
 }
 
 .c-site-header__nav--secondary {
-    grid-area: nav--secondary
+  grid-area: nav--secondary;
 }
 
 .c-site-header:not(.c-site-header--menu) {
-    background-color: #0a0a0a;
-    color: var(--text-color-light);
-    background-image: url(/dist/images/texture-black-1400.jpg);
-    background-size: min(1400px,100%) auto;
-    background-position: center bottom
+  background-color: #0a0a0a;
+  color: var(--text-color-light);
+  /* background-image: url(/dist/images/texture-black-1400.jpg); */
+  background-size: min(1400px, 100%) auto;
+  background-position: center bottom;
 }
 
 @media (min-width: 72.01rem) {
-    .c-site-header {
-        font-size:1.25rem
-    }
+  .c-site-header {
+    font-size: 1.25rem;
+  }
 }
 
 .c-site-header__container {
-    padding: 1rem 0;
-    display: grid;
-    grid-area: 1/3/1/15;
-    align-items: center;
-    grid-template-columns: 1fr max-content 1fr;
-    grid-template-areas: "nav--secondary logo nav--primary"
+  padding: 1rem 0;
+  display: grid;
+  grid-area: 1/3/1/15;
+  align-items: center;
+  grid-template-columns: 1fr max-content 1fr;
+  grid-template-areas: "nav--secondary logo nav--primary";
 }
 
 @media (min-width: 72.01rem) {
-    .c-site-header__container {
-        grid-template-areas:"nav--account logo nav--secondary" "nav--primary nav--primary nav--primary"
-    }
+  .c-site-header__container {
+    grid-template-areas: "nav--account logo nav--secondary" "nav--primary nav--primary nav--primary";
+  }
 }
 
 @media (min-width: 60.01rem) {
-    .c-site-header__logo {
-        font-size:2rem
-    }
+  .c-site-header__logo {
+    font-size: 2rem;
+  }
 }
 
 @media (min-width: 72.01rem) {
-    .c-site-header__logo {
-        font-size:2.75rem
-    }
+  .c-site-header__logo {
+    font-size: 2.75rem;
+  }
 }
 
 .c-site-header__nav--primary {
-    justify-self: end
+  justify-self: end;
 }
 
 @media (min-width: 72.01rem) {
-    .c-site-header__nav--primary {
-        --nav-list-justify: space-between;
-        justify-self: stretch;
-        margin-top: 1rem;
-        margin-bottom: .5rem
-    }
+  .c-site-header__nav--primary {
+    --nav-list-justify: space-between;
+    justify-self: stretch;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .c-site-header__nav--secondary {
-    --nav-link-active-color: transparent;
-    justify-self: start
+  --nav-link-active-color: transparent;
+  justify-self: start;
 }
 
 @media (min-width: 72.01rem) {
-    .c-site-header__nav--secondary {
-        justify-self:end;
-        font-size: var(--text-size-small)
-    }
+  .c-site-header__nav--secondary {
+    justify-self: end;
+    font-size: var(--text-size-small);
+  }
 }
 
 .c-site-header__nav--account {
-    --nav-link-active-color: transparent
+  --nav-link-active-color: transparent;
 }
 
 @media (min-width: 72.01rem) {
-    .c-site-header__nav--account {
-        font-size:var(--text-size-small)
-    }
+  .c-site-header__nav--account {
+    font-size: var(--text-size-small);
+  }
 }
 
 .c-site-header__trigger {
-    --nav-link-active-color: transparent
+  --nav-link-active-color: transparent;
 }

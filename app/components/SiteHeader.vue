@@ -148,7 +148,7 @@ onMounted(() => {
 .c-site-header:not(.c-site-header--menu) {
   background-color: #0a0a0a;
   color: var(--text-color-light);
-  background-image: url(/dist/images/texture-black-1400.jpg);
+  /* background-image: url(/dist/images/texture-black-1400.jpg); */
   background-size: min(1400px, 100%) auto;
   background-position: center bottom;
 }
