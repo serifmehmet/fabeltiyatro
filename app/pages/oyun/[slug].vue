@@ -47,6 +47,19 @@ const slug = route.params.slug as string
 
 const { data: play } = await useSanityQuery<Play>(playBySlugQuery, { slug })
 
+// Initialize tab from query parameter if provided
+const { setActiveTab } = usePlayTabs()
+const tabParam = route.query.tab as string
+if (tabParam && [
+  'content-the-play',
+  'content-the-company',
+  'content-events',
+  'content-gallery',
+  'content-rehearsal-notes'
+].includes(tabParam)) {
+  setActiveTab(tabParam as any)
+}
+
 // Handle case where play is not found
 if (!play.value) {
   throw createError({
