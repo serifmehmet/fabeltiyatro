@@ -1,16 +1,24 @@
+import tailwindcss from "@tailwindcss/vite";
+import { defineNuxtConfig } from "nuxt/config";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   app: {
     head: {
+      titleTemplate: "%s | Fabel Tiyatro",
       title: "Fabel Tiyatro",
       meta: [
+        { charset: "utf-8" },
         {
           name: "description",
           content:
             "Fabel Tiyatro - bağımsız tiyatro topluluğu, prova döneminde. Haberdar olmak için bültenimize katılın.",
         },
+        { property: "og:type", content: "website" },
+        { property: "og:site_name", content: "Fabel Tiyatro" },
+        { name: "twitter:card", content: "summary_large_image" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
       link: [{ rel: "icon", type: "image/png", href: "/fabellogosiyah.jpg" }],
@@ -46,6 +54,23 @@ export default defineNuxtConfig({
       },
     },
   },
-  css: ["~/assets/css/tailwind.css"],
-  modules: ["@nuxtjs/tailwindcss"],
+  css: ["~/assets/css/styles.css"],
+  modules: ["@nuxtjs/sanity"],
+  sanity: {
+    projectId: process.env.SANITY_PROJECT_ID,
+    dataset: "production",
+    apiVersion: "2023-05-03",
+  },
+  runtimeConfig: {
+    mailerliteKey: process.env.MAILERLITE_API_KEY,
+  },
+  vite: {
+    plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        "react-compiler-runtime": "react-compiler-runtime",
+        react: "react",
+      },
+    },
+  },
 });

@@ -1,170 +1,244 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import logoImage from '~/assets/images/fabel_tiyatro_logo.png'
-import instaIcon from '~/assets/images/insta_icon.png'
-import facebookIcon from '~/assets/images/fb_icon.png'
-import youtubeIcon from '~/assets/images/yt_icon.png'
-import wpIcon from '~/assets/images/wp_icon.png'
-import CarbonBadge from "vue-carbonbadge"
+import { computed, ref, onMounted, onUnmounted } from "vue";
+import logoImage from "~/assets/images/fabel_tiyatro_logo.png";
+import instaIcon from "~/assets/images/insta_icon.png";
+import facebookIcon from "~/assets/images/fb_icon.png";
+import youtubeIcon from "~/assets/images/yt_icon.png";
+import wpIcon from "~/assets/images/wp_icon.png";
+import mailingListBanner from "~/assets/images/mailing-list-banner.jpg";
+import CarbonBadge from "vue-carbonbadge";
+import { homePageQuery } from "~/sanity/queries/homePageQueries";
 
-type SubmitState = 'idle' | 'success' | 'error'
+type SubmitState = "idle" | "success" | "error";
 
-const email = ref('')
-const submitState = ref<SubmitState>('idle')
+interface SliderImage {
+  asset: {
+    _id: string;
+    url: string;
+  };
+}
+
+interface SelectedPlay {
+  _id: string;
+  title: string;
+  slug: string;
+  slogan: string;
+  image?: string;
+}
+
+interface HomePage {
+  _id: string;
+  slider?: SliderImage[];
+  seo?: {
+    title?: string;
+    description?: string;
+    image?: any;
+    noIndex?: boolean;
+  };
+  selectedPlay?: SelectedPlay[];
+}
+
+// Fetch homepage data from Sanity
+const { data: homePage } = await useSanityQuery<HomePage>(homePageQuery);
+
+// Set up SEO
+useSeo({
+  seo: homePage.value?.seo,
+  fallbackTitle: "Anasayfa",
+  fallbackDescription: "Sahnesiz tiyatro, hikayesi bol topluluk.",
+});
+
+// Slider logic
+const currentSlideIndex = ref(0);
+let sliderInterval: NodeJS.Timeout | null = null;
+
+// Get the maximum count between slider and selectedPlay arrays
+const slideCount = computed(() => {
+  const sliderCount = homePage.value?.slider?.length || 0;
+  const playCount = homePage.value?.selectedPlay?.length || 0;
+  return Math.max(sliderCount, playCount);
+});
+
+// Get current slider image (synchronized with play index)
+const currentSliderImage = computed(() => {
+  if (!homePage.value?.slider || homePage.value.slider.length === 0)
+    return null;
+  const index = currentSlideIndex.value % homePage.value.slider.length;
+  return homePage.value.slider[index];
+});
+
+// Get current selected play (synchronized with slider index)
+const currentSelectedPlay = computed(() => {
+  if (!homePage.value?.selectedPlay || homePage.value.selectedPlay.length === 0)
+    return null;
+  const index = currentSlideIndex.value % homePage.value.selectedPlay.length;
+  return homePage.value.selectedPlay[index];
+});
+
+const nextSlide = () => {
+  if (slideCount.value > 0) {
+    currentSlideIndex.value = (currentSlideIndex.value + 1) % slideCount.value;
+  }
+};
+
+onMounted(() => {
+  if (slideCount.value > 1) {
+    sliderInterval = setInterval(nextSlide, 7000);
+  }
+});
+
+onUnmounted(() => {
+  if (sliderInterval) {
+    clearInterval(sliderInterval);
+  }
+});
+
+const email = ref("");
+const submitState = ref<SubmitState>("idle");
 const socialLinks = [
   {
-    name: 'Instagram',
-    href: 'https://www.instagram.com/fabeltiyatro',
-    description: 'Provalardan kareler ve duyurular',
-    icon: instaIcon
+    name: "Instagram",
+    href: "https://www.instagram.com/fabeltiyatro",
+    description: "Provalardan kareler ve duyurular",
+    icon: instaIcon,
   },
   {
-    name: 'Facebook',
-    href: 'https://www.facebook.com/fabeltiyatro',
-    description: 'Topluluğumuzdan uzun hikayeler',
-    icon: facebookIcon
+    name: "Facebook",
+    href: "https://www.facebook.com/fabeltiyatro",
+    description: "Topluluğumuzdan uzun hikayeler",
+    icon: facebookIcon,
   },
   {
-    name: 'WhatsApp',
-    href: 'https://chat.whatsapp.com/D6bhDXuecjE8b94yGHBmfp?mode=wwt',
-    description: 'WhatsApp topluluğumuza katılın',
-    icon: wpIcon
+    name: "WhatsApp",
+    href: "https://chat.whatsapp.com/D6bhDXuecjE8b94yGHBmfp?mode=wwt",
+    description: "WhatsApp topluluğumuza katılın",
+    icon: wpIcon,
   },
   {
-    name: 'Youtube',
-    href: 'https://www.youtube.com/@FabelTiyatro',
-    description: 'Youtube kanalımıza abone olun',
-    icon: youtubeIcon
-  }
-]
+    name: "Youtube",
+    href: "https://www.youtube.com/@FabelTiyatro",
+    description: "Youtube kanalımıza abone olun",
+    icon: youtubeIcon,
+  },
+];
 
 const newsletterHighlights = [
   {
-    title: 'Aylık oyun ve turne takvimi',
-    detail: 'Aylık oyun ve turne takvimimizi, oyunlarımızdan notlarımızı paylaşıyoruz.'
+    title: "Aylık oyun ve turne takvimi",
+    detail:
+      "Aylık oyun ve turne takvimimizi, oyunlarımızdan notlarımızı paylaşıyoruz.",
   },
-  
-  {
-    title: 'Özel davetler',
-    detail: 'Seyircili prova tarihlerimizi, provalarımızdan notlarımızı ve daha birçok özel içeriğimizi paylaşıyoruz.'
-  }
-]
 
-const successMessage = 'Katıldığınız için teşekkürler. Yeni oyun ve etkinlik duyurularını ilk siz alacaksınız!'
+  {
+    title: "Özel davetler",
+    detail:
+      "Seyircili prova tarihlerimizi, provalarımızdan notlarımızı ve daha birçok özel içeriğimizi paylaşıyoruz.",
+  },
+];
+
+const successMessage =
+  "Katıldığınız için teşekkürler. Yeni oyun ve etkinlik duyurularını ilk siz alacaksınız!";
 const errorMessage = computed(() => {
   if (!email.value) {
-    return 'Lütfen e-posta adresinizi girin.'
+    return "Lütfen e-posta adresinizi girin.";
   }
-  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
   if (!pattern.test(email.value)) {
-    return 'Geçerli bir e-posta adresi girin.'
+    return "Geçerli bir e-posta adresi girin.";
   }
-  return ''
-})
+  return "";
+});
 
 const handleSubmit = () => {
   if (errorMessage.value) {
-    submitState.value = 'error'
-    return
+    submitState.value = "error";
+    return;
   }
-  submitState.value = 'success'
-  email.value = ''
-}
+  submitState.value = "success";
+  email.value = "";
+};
 </script>
 
 <template>
-  <main class="page-main">
-    <section class="hero-section">
-      <div class="hero-content">
-        <div class="hero-header">
-          <img
-            :src="logoImage"
-            alt="Fabel Tiyatro logosu"
-            class="hero-logo"
-          />
-          <!-- <div>
-            <p class="hero-subtitle">Fabel Tiyatro</p>
-            <h1 class="hero-title">Sahnesiz tiyatro, hikayesi bol topluluk.</h1>
-          </div> -->
-        </div>
-        <p class="hero-description">
-          Şu an yoğun bir prova dönemindeyiz. Sizinle buluşmak için
-          sabırsızlanıyoruz. Bültenimize katılın; ilk sahneye çıktığımızda haberdar olun.
-        </p>
-
-        <section class="cta-section">
-      <div class="cta-container">
-        <div class="cta-text">
-          <h2 class="cta-heading">Topluluğa katılın</h2>
-          <p class="cta-description">
-            Oyunlardan ve provalardan haberler, seyirci çağrıları ve daha bir çok içerik sosyal medya kanallarımızda.
-          </p>
-        </div>
-        <div class="cta-links">
-          <a
-            v-for="link in socialLinks"
-            :key="link.name"
-            :href="link.href"
-            target="_blank"
-            rel="noopener"
-            class="cta-link"
-          >
-            <div class="cta-link-icon-wrapper">
-              <img
-                :src="link.icon"
-                alt="Fabel Tiyatro logosu"
-                class="hero-logo"
-              />
+  <main class="o-page-grid o-grid o-grid--flush" id="site-main" role="main" tabindex="-1">
+    <div class="o-page-grid__header" id="page-header">
+      <header class="c-page-header o-grid c-page-header--home">
+        <div class="c-page-header__promo">
+          <Transition name="slide-fade" mode="out-in">
+            <div class="c-promo" v-if="currentSliderImage || currentSelectedPlay" :key="currentSlideIndex">
+              <div class="c-promo__media o-grid">
+                <picture class="o-image o-image--picture c-promo__image">
+                  <SanityImage v-if="currentSliderImage" :asset-id="currentSliderImage.asset._id" :width="400"
+                    :height="225" alt class="o-image__img" loading="eager" style="--object-position: 50% 50%" />
+                </picture>
+              </div>
+              <div class="c-promo__text o-grid" v-if="currentSelectedPlay">
+                <div class="c-promo__primary">
+                  <h2 class="c-promo__heading">
+                    {{ currentSelectedPlay.title }}
+                  </h2>
+                  <p class="c-promo__subheading">
+                    {{ currentSelectedPlay.slogan }}
+                  </p>
+                </div>
+                <div class="c-promo__secondary">
+                  <div class="c-promo__actions">
+                    <NuxtLink v-if="currentSelectedPlay.slug" :to="`/oyun/${currentSelectedPlay.slug}`"
+                      class="o-button">Detaylar
+                    </NuxtLink>
+                  </div>
+                </div>
+              </div>
             </div>
-            <span class="cta-link-text">
-              <span class="cta-link-name">{{ link.name }}</span>
-              <span class="cta-link-description">{{ link.description }}</span>
-            </span>
-          </a>
+          </Transition>
         </div>
-      </div>
-    </section>
-      </div>
-
-      <section class="newsletter-aside">
-        <h2 class="newsletter-aside-heading">Bültenimizde neler var?</h2>
-        <ul class="newsletter-aside-list">
-          <li v-for="item in newsletterHighlights" :key="item.title" class="newsletter-aside-item">
-            <h3 class="newsletter-aside-item-title">{{ item.title }}</h3>
-            <p class="newsletter-aside-item-text">
-              {{ item.detail }}
+      </header>
+    </div>
+    <div class="o-block o-banner o-grid__item o-block--row-5">
+      <NuxtLink to="/mail-listesi" class="c-banner c-banner--image" data-sc-gtm-category="Banner"
+        data-sc-gtm-label="Listeye Katılın">
+        <div class="c-banner__text">
+          <h2 class="c-banner__title">Listeye Katılın</h2>
+          <div class="c-banner__summary">
+            <p>
+              Oyunlarımızdan, seyircili provalarımızdan ve bilet
+              kampanyalarımızdan ilk siz haberdar olun
             </p>
-          </li>
-        </ul>
-        
-        <div class="ml-embedded" data-form="pOMSZL"></div>
-
-        <p class="newsletter-aside-note">
-          Topluluğumuza katılın ve en son haberleri, indirimleri ve oyunlarımıza özel teklifleri e-posta kutunuza gönderelim.
-        </p>
-      </section>
-    </section>
-
-    
-
-    <footer class="site-footer">
-      <p>
-        © 2025 - Fabel Tiyatro.
-      </p>
-      <ClientOnly>
-    <CarbonBadge/>
-  </ClientOnly>
-    </footer>
+          </div>
+          <div class="c-banner__action o-button o-button--outline">
+            <span class="o-button__text">Mail Listemize Katılın</span>
+            <span class="o-button__icon icon i-chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" viewBox="0 0 70 70">
+                <path fill-rule="evenodd"
+                  d="M13.646 9.111a2.121 2.121 0 0 1 0-3.048l5.689-5.48a2.07 2.07 0 0 1 2.878 0l34.141 32.893.07.07a2.121 2.121 0 0 1-.07 2.978l-34.14 32.894a2.07 2.07 0 0 1-2.88 0l-5.688-5.481a2.121 2.121 0 0 1 0-3.048L40.516 35 13.646 9.111Z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div class="o-image o-image--cover c-banner__image">
+          <img :src="mailingListBanner" alt="Mail listesi banner" class="o-image__img" />
+        </div>
+      </NuxtLink>
+    </div>
   </main>
+
+  <!-- <div class="ml-embedded" data-form="pOMSZL"></div> -->
 </template>
 
 <style scoped lang="postcss">
 .page-main {
-  @apply relative overflow-hidden bg-black;
+  @apply relative overflow-hidden grid;
+  background-color: var(--bg-content);
+  grid-template-columns:
+    [full-start] minmax(1.5rem, 1fr) [break-start] repeat(12,
+      [col] minmax(0, 4.9166666667rem)) [break-end] minmax(1.5rem, 1fr) [full-end];
+  column-gap: 1.5rem;
 }
 
 .hero-section {
-  @apply relative z-10 mx-auto flex min-h-[75vh] max-w-6xl flex-col gap-12 px-6 pb-16 pt-24 md:flex-row md:items-start;
+  @apply relative z-10 flex min-h-[75vh] flex-col gap-12 pb-16 pt-24 md:flex-row md:items-start;
+  grid-column: break-start / break-end;
 }
 
 .hero-content {
@@ -174,7 +248,6 @@ const handleSubmit = () => {
 .hero-header {
   @apply flex items-center gap-4;
 }
-
 
 .hero-subtitle {
   @apply uppercase text-white/60;
@@ -225,8 +298,6 @@ const handleSubmit = () => {
   @apply text-xs text-white/50;
 }
 
-
-
 .newsletter-aside {
   @apply flex-1 space-y-5 rounded-3xl border border-white/10 p-8 backdrop-blur;
   background-color: rgba(255, 255, 255, 0.03);
@@ -259,11 +330,10 @@ const handleSubmit = () => {
 
 .cta-section {
   @apply relative z-10 border-t border-white/5 pt-5;
-  
 }
 
 .cta-container {
-  @apply mx-auto max-w-5xl  ;
+  @apply w-full;
 }
 
 .cta-text {
@@ -288,7 +358,7 @@ const handleSubmit = () => {
 }
 
 .cta-link-icon-wrapper {
-  @apply flex h-12 w-12 items-center justify-center  text-white;
+  @apply flex h-12 w-12 items-center justify-center text-white;
 }
 
 .cta-link-icon {
@@ -309,6 +379,7 @@ const handleSubmit = () => {
 
 .site-footer {
   @apply relative z-10 border-t border-white/5 py-10 text-center text-xs text-white/50;
+  grid-column: break-start / break-end;
 }
 
 .ml-form-align-center {
@@ -318,5 +389,24 @@ const handleSubmit = () => {
 .ml-form-embedContainer .ml-form-embedWrapper.embedForm {
   width: 100% !important;
   max-width: 100% !important;
+}
+
+/* Slider transition effects */
+.slide-fade-enter-active {
+  transition: all 0.6s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.4s ease-in;
+}
+
+.slide-fade-enter-from {
+  transform: translateX(30px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(-30px);
+  opacity: 0;
 }
 </style>

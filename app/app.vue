@@ -1,12 +1,14 @@
+<script setup lang="ts">
+import Footer from './components/Footer.vue';
+
+</script>
+
 <template>
-  <div class="app-root">
+  <div class="c-site-page ">
     <NuxtRouteAnnouncer />
+    <SiteHeader />
+
     <NuxtPage />
+    <Footer />
   </div>
 </template>
-
-<style scoped lang="postcss">
-.app-root {
-  @apply min-h-screen bg-black text-white font-sans antialiased;
-}
-</style>
